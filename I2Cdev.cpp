@@ -137,6 +137,7 @@ int8_t I2Cdev::readBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8
     for(int i =0; i < length; i++) {
         data[i] = redData[i];
     }
+    free (redData);
     return length;
 }
 
