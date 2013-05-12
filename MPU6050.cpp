@@ -1882,7 +1882,16 @@ bool MPU6050::getIntDataReadyStatus()
 void MPU6050::getMotion9(int16_t* ax, int16_t* ay, int16_t* az, int16_t* gx, int16_t* gy, int16_t* gz, int16_t* mx, int16_t* my, int16_t* mz)
 {
     getMotion6(ax, ay, az, gx, gy, gz);
-    // TODO: magnetometer integration
+    
+    // magnetometer reading
+    i2Cdev.writeByte(devAddr, MPU6050_RA_INT_PIN_CFG, 0x02); //set i2c bypass enable pin to true to access magnetometer
+    wait_ms(10); // necessary wait >=6ms
+    i2Cdev.writeByte(MPU9150_RA_MAG_ADDRESS, 0x0A, 0x01); // enable the magnetometer
+    wait_ms(10); // necessary wait >=6ms
+    i2Cdev.readBytes(MPU9150_RA_MAG_ADDRESS, MPU9150_RA_MAG_XOUT_L, 6, buffer);
+    *mx = (((int16_t)buffer[0]) << 8) | buffer[1];
+    *my = (((int16_t)buffer[2]) << 8) | buffer[3];
+    *mz = (((int16_t)buffer[4]) << 8) | buffer[5];
 }
 /** Get raw 6-axis motion sensor readings (accel/gyro).
  * Retrieves all currently available motion sensor values.
@@ -3250,8 +3259,8 @@ bool MPU6050::writeMemoryBlock(const uint8_t *data, uint16_t dataSize, uint8_t b
     setMemoryBank(bank);
     setMemoryStartAddress(address);
     uint8_t chunkSize;
-    uint8_t *verifyBuffer;
-    uint8_t *progBuffer;
+    uint8_t *verifyBuffer = NULL;
+    uint8_t *progBuffer = NULL;
     uint16_t i;
     uint8_t j;
     if (verify) verifyBuffer = (uint8_t *)malloc(MPU6050_DMP_MEMORY_CHUNK_SIZE);
@@ -3328,7 +3337,8 @@ bool MPU6050::writeProgMemoryBlock(const uint8_t *data, uint16_t dataSize, uint8
 }
 bool MPU6050::writeDMPConfigurationSet(const uint8_t *data, uint16_t dataSize, bool useProgMem)
 {
-    uint8_t *progBuffer, success, special;
+    uint8_t success, special;
+    uint8_t *progBuffer = NULL;
     uint16_t i, j;
     if (useProgMem) {
         progBuffer = (uint8_t *)malloc(8); // assume 8-byte blocks, realloc later if necessary
