@@ -46,8 +46,8 @@ THE SOFTWARE.
 
 //instead of using pgmspace.h
 typedef const unsigned char prog_uchar;
-#define pgm_read_byte_near(x) (*(prog_uchar*)x)
-#define pgm_read_byte(x) (*(prog_uchar*)x)
+#define pgm_read_byte_near(x) (*(prog_uchar*)(x))//<- I modified here
+#define pgm_read_byte(x) (*(prog_uchar*)(x))//<- I modified here
 
 /** Default constructor, uses default I2C address.
  * @see MPU6050_DEFAULT_ADDRESS
