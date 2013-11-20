@@ -33,6 +33,8 @@ THE SOFTWARE.
 #ifndef _MPU6050_6AXIS_MOTIONAPPS20_H_
 #define _MPU6050_6AXIS_MOTIONAPPS20_H_
 
+#include <iostream>
+
 #include "I2Cdev.h"
 #include "helper_3dmath.h"
 
@@ -100,12 +102,13 @@ THE SOFTWARE.
 // after moving string constants to flash memory storage using the F()
 // compiler macro (Arduino IDE 1.0+ required).
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
-    #define DEBUG_PRINT(x) Serial.print(x)
-    #define DEBUG_PRINTF(x, y) Serial.print(x, y)
-    #define DEBUG_PRINTLN(x) Serial.println(x)
-    #define DEBUG_PRINTLNF(x, y) Serial.println(x, y)
+    #define DEBUG_PRINT(x) std::cout << x   //Serial.print(x)
+    #define DEBUG_PRINTF(x, y) std::cout << x   //Serial.print(x, y)
+    #define DEBUG_PRINTLN(x) std::cout << x << std::endl   //Serial.println(x)
+    #define DEBUG_PRINTLNF(x, y) std::cout << x << std::endl  //Serial.println(x, y)
+    #define F(x) x
 #else
     #define DEBUG_PRINT(x)
     #define DEBUG_PRINTF(x, y)
@@ -355,19 +358,19 @@ uint8_t MPU6050::dmpInitialize() {
     DEBUG_PRINTLN(F("Reading OTP bank valid flag..."));
     uint8_t otpValid = getOTPBankValid();
     DEBUG_PRINT(F("OTP bank is "));
-    DEBUG_PRINTLN(otpValid ? F("valid!") : F("invalid!"));
+    DEBUG_PRINTLN((otpValid ? F("valid!") : F("invalid!")));
 
     // get X/Y/Z gyro offsets
     DEBUG_PRINTLN(F("Reading gyro offset TC values..."));
     //int8_t xgOffsetTC = getXGyroOffsetTC();
     //int8_t ygOffsetTC = getYGyroOffsetTC();
     //int8_t zgOffsetTC = getZGyroOffsetTC();
-    DEBUG_PRINT(F("X gyro offset = "));
-    DEBUG_PRINTLN(xgOffset);
-    DEBUG_PRINT(F("Y gyro offset = "));
-    DEBUG_PRINTLN(ygOffset);
-    DEBUG_PRINT(F("Z gyro offset = "));
-    DEBUG_PRINTLN(zgOffset);
+    //DEBUG_PRINT(F("X gyro offset = "));
+    //DEBUG_PRINTLN(xgOffset);
+    //DEBUG_PRINT(F("Y gyro offset = "));
+    //DEBUG_PRINTLN(ygOffset);
+    //DEBUG_PRINT(F("Z gyro offset = "));
+    //DEBUG_PRINTLN(zgOffset);
 
     // setup weird slave stuff (?)
     DEBUG_PRINTLN(F("Setting slave 0 address to 0x7F..."));
