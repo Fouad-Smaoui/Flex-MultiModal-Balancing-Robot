@@ -94,7 +94,7 @@ http://code.google.com/p/arduino/issues/detail?id=958
 // (in degrees) calculated from the quaternions coming from the FIFO.
 // Note that Euler angles suffer from gimbal lock (for more info, see
 // http://en.wikipedia.org/wiki/Gimbal_lock)
-//#define OUTPUT_READABLE_EULER
+#define OUTPUT_READABLE_EULER
 
 // uncomment "OUTPUT_READABLE_YAWPITCHROLL" if you want to see the yaw/
 // pitch/roll angles (in degrees) calculated from the quaternions coming
@@ -118,7 +118,7 @@ http://code.google.com/p/arduino/issues/detail?id=958
 
 // uncomment "OUTPUT_TEAPOT" if you want output that matches the
 // format used for the InvenSense teapot demo
-#define OUTPUT_TEAPOT
+//#define OUTPUT_TEAPOT
 
 
 
@@ -161,8 +161,8 @@ int main()
 {
     
     //Pin Defines for I2C Bus
-#define D_SDA                  p9
-#define D_SCL                  p10
+#define D_SDA                  D4
+#define D_SCL                  D5
 //#define D_SDA                  p28
 //#define D_SCL                  p27
 I2C i2c(D_SDA, D_SCL);
