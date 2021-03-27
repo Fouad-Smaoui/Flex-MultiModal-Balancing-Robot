@@ -260,7 +260,9 @@ bool I2Cdev::writeBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_
     for(int i = 0; i < length; i++) {
         i2c.write(data[i]);
     }
+    
     i2c.stop();
+    
     return true;
 }
 
