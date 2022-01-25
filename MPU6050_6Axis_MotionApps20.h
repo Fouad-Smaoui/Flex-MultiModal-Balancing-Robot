@@ -326,7 +326,7 @@ const unsigned char dmpUpdates[MPU6050_DMP_UPDATES_SIZE] PROGMEM = {
 uint8_t MPU6050::dmpInitialize() {
     // reset device
     Serial pc(USBTX, USBRX); // tx, rx  
-    pc.baud(115200);
+    pc.baud(9600);
     wait_ms(50);
     
     pc.printf("\n\nSet USB Baudrate to 115200...\n");
@@ -367,15 +367,15 @@ uint8_t MPU6050::dmpInitialize() {
     else  DEBUG_PRINT("invalid!\n");
 
     // get X/Y/Z gyro offsets
-    /*
-    DEBUG_PRINT("\nReading gyro offset TC values...\n");
-    int8_t xgOffsetTC = mpu.getXGyroOffsetTC();
-    int8_t ygOffsetTC = getYGyroOffsetTC();
-    int8_t zgOffsetTC = getZGyroOffsetTC();
-    DEBUG_PRINTF("X gyro offset = %u\n",xgOffset);
-    DEBUG_PRINTF("Y gyro offset = %u\n",ygOffset);
-    DEBUG_PRINTF("Z gyro offset = %u\n",zgOffset);
-    */
+    
+    //DEBUG_PRINT("\nReading gyro offset TC values...\n");
+    //int8_t ZAOffset = getZAccelOffset();
+    //int8_t ygOffset = getYGyroOffset();
+    //int8_t zgOffset = getZGyroOffset();
+    //DEBUG_PRINTF("Z  acc offset = %u\n",ZAOffset);
+    //DEBUG_PRINTF("Y gyro offset = %u\n",ygOffset);
+    //DEBUG_PRINTF("Z gyro offset = %u\n",zgOffset);
+    
     // setup weird slave stuff (?)
     DEBUG_PRINT("Setting slave 0 address to 0x7F...\n");
     setSlaveAddress(0, 0x7F);

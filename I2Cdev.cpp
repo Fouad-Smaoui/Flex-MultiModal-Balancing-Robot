@@ -7,9 +7,12 @@
 
 #define useDebugSerial
 
+
+
 I2Cdev::I2Cdev(): i2c(I2C_SDA,I2C_SCL), debugSerial(USBTX, USBRX)
 {
 
+i2c.frequency(400000);
 }
 
 I2Cdev::I2Cdev(PinName i2cSda, PinName i2cScl): i2c(i2cSda,i2cScl), debugSerial(USBTX, USBRX)

@@ -12,6 +12,7 @@
 #define I2C_SDA D14
 #define I2C_SCL D15
 
+
 class I2Cdev {
     private:
         I2C i2c;
