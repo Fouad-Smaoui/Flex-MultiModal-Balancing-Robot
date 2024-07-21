@@ -1,5 +1,7 @@
 # FLEX: The Wheeled Bipedal Legged Self Balancing Robot
 
+[![Watch The Video](https://img.youtube.com/vi/Me2IMcmEs_o/0.jpg)](https://youtu.be/Me2IMcmEs_o)
+
 FLEX is a wheeled bipedal legged self-balancing robot developed as part of a Master’s project in Advanced Systems and Robotics. The goal of the project is to apply concepts from our studies to control a nonlinear and unstable system, specifically an inverted pendulum, and make it balance autonomously. This project involved the design and implementation of control systems, sensor integration, and motor control using the STM32 Nucleo board.
 
 ## Features
@@ -15,6 +17,7 @@ Utilizes accelerometers, gyroscopes, and encoders for precise measurement of ori
 The project is powered by an STM32 Nucleo board, which offers a robust environment for control system implementation and sensor data processing.
 
 ## Hardware
+![Alt text](Images/photo2.jpg)
 ### Main Components
 #### Microcontroller: 
 STM32 Nucleo board.
@@ -32,6 +35,11 @@ A DC-DC buck converter is used to regulate the voltage from the battery to the r
 like resistors, capacitors, potentiometers for tuning PID gains, switches, and LEDs for indications.
 
 ## Control Systems
+
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](Images/FLEX_assis.png)  |  ![](Images/FLEX_debout.png)
+
 ### PID Control
 #### Tuning: 
 Potentiometers are used to manually tune the PID coefficients (Kp, Ki, Kd).
