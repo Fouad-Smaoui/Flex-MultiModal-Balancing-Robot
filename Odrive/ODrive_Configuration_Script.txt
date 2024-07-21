@@ -1,0 +1,254 @@
+####### Ce fichier répertorie les lignes de commande lancées pour programmer la carte Odrive en python sur le prompt 
+####### La carte de controle doit être en mode "run" (voir le piano sur la carte)
+####### des pilotes de la carte ordive sont parfois nécessaire pour établir la connexion (winUSB si nécessaire) 
+####### taper "odrivetool" pour se connecter à la carte Odrive en USB
+
+####### lignes de commande
+odrv0.axis0.motor.config.current_lim = 40
+odrv0.axis0.controller.config.vel_limit = 20
+odrv0.axis0.motor.config.calibration_current = 20
+odrv0.config.brake_resistance = 2
+odrv0.axis0.motor.config.pole_pairs = 7
+
+odrv0.axis0.motor.config.resistance_calib_max_voltage = 2
+
+odrv0.axis0.motor.config.requested_current_range = 25
+
+odrv0.axis0.motor.config.current_control_bandwidth = 100
+
+
+odrv0.axis0.motor.config.torque_constant = 8.27/270
+
+odrv0.axis0.encoder.config.bandwidth = 100
+
+
+
+odrv0.axis0.encoder.config.cpr = 8192
+
+odrv0.axis0.encoder.config.use_index =True
+
+odrv0.axis0.controller.config.pos_gain = 1
+
+odrv0.axis0.controller.config.vel_gain = 0.02 * odrv0.axis0.motor.config.torque_constant * odrv0.axis0.encoder.config.cpr
+
+odrv0.axis0.controller.config.vel_integrator_gain = 0.01 * odrv0.axis0.motor.config.torque_constant * odrv0.axis0.encoder.config.cpr
+
+odrv0.axis0.controller.config.vel_limit = 1000
+
+odrv0.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+
+odrv0.axis0.motor.config.calibration_current = 5
+
+odrv0.save_configuration()
+
+odrv0.axis0.requested_state = AXIS_STATE_MOTOR_CALIBRATION
+
+phase_inductance: 1.589498424436897e-05 (float)
+phase_resistance: 0.06938321888446808 (float)
+
+
+
+odrv0.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION
+
+ phase_offset: -5076 (int32)
+  phase_offset_float: 0.17558443546295166 (float)
+
+odrv0.axis0.encoder.config.pre_calibrated = True
+
+odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+
+odrv0.axis0.controller.input_vel = 20
+
+
+
+odrv0.axis0.controller.config.vel_gain=1.9/2 #[Nm/(turn/s)]
+odrv0.axis0.controller.config.vel_integrator_gain  = (0.5 * 10 * 1.9/2 ) #[Nm/((turn/s) * s)]
+odrv0.axis0.controller.config.pos_gain=15  #[(turn/s) / turn]
+
+
+
+Commande en position
+!!!!! supprime la config des 2 moteurs, il faut refaire la config des 2 moteurs !!!! 
+!!!!!!!!!!!!!!!!!!!!!!!!!
+odrv0.erase_configuration()
+odrv0.reboot()
+!!!!!!!!!!!!!!!!!!!!!!!!!
+
+##################################      moteur 1    ###########################################
+
+odrv0.config.brake_resistance = 2
+
+odrv0.axis0.motor.config.pole_pairs = 7
+odrv0.axis0.motor.config.calibration_current = 50
+
+
+odrv0.axis0.motor.config.current_lim = 30
+
+odrv0.axis0.motor.config.resistance_calib_max_voltage = 2
+odrv0.axis0.motor.config.requested_current_range = 5
+odrv0.axis0.motor.config.current_control_bandwidth = 100
+
+odrv0.axis0.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
+
+odrv0.axis0.encoder.config.cpr = 8192
+
+
+odrv0.axis0.controller.config.vel_limit = 2000
+odrv0.axis0.controller.config.vel_gain=1.9/2 #[Nm/(turn/s)]
+odrv0.axis0.controller.config.vel_integrator_gain  = (0.5 * 10 * 1.9/2 ) #[Nm/((turn/s) * s)]
+odrv0.axis0.controller.config.pos_gain=15  #[(turn/s) / turn]
+odrv0.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+odrv0.axis0.controller.config.enable_torque_mode_vel_limit = False
+
+odrv0.save_configuration()
+odrv0.reboot()
+
+
+
+odrv0.axis0.encoder.config.use_index =True
+odrv0.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+odrv0.axis0.encoder.config.use_index = True
+odrv0.axis0.requested_state = AXIS_STATE_ENCODER_INDEX_SEARCH
+odrv0.axis0.config.startup_encoder_index_search = True
+odrv0.axis0.requested_state = AXIS_STATE_MOTOR_CALIBRATION
+odrv0.axis0.motor.config.pre_calibrated = True
+odrv0.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION
+
+
+
+
+odrv0.axis0.encoder.config.pre_calibrated = True
+odrv0.axis0.motor.config.pre_calibrated = True
+
+odrv0.axis0.config.startup_encoder_offset_calibration = True
+odrv0.axis0.config.startup_closed_loop_control = True
+odrv0.axis0.config.startup_motor_calibration = True
+
+odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+#tell the odrive we are pr-calibrated so we don't need to recalibrate every time
+
+
+#NOTE: THE FOLLOWING COMMANDS MIGHT MAKE YOUR MOTOR SPIN WILDLY FOR A SECOND IF YOU HAVE MOVED IT SINCE TURNING IT ON
+#Put the controller in position control mode
+odrv0.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+odrv0.axis0.controller.config.input_mode = INPUT_MODE_PASSTHROUGH
+odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+
+#Temporarily increase the gain so that the calibration happens quickly
+odrv0.axis0.controller.config.pos_gain = 200
+odrv0.axis0.controller.config.vel_integrator_gain  = (0.5 * 10 * 0.32/2 )*10
+
+#THIS IS THE MAGIC - Start the calibration
+odrv0.axis0.controller.start_anticogging_calibration()
+
+#Put the gain back to what it was before
+odrv0.axis0.controller.config.vel_integrator_gain  = (0.5 * 10 * 0.32/2 )
+odrv0.axis0.controller.config.pos_gain=15
+
+# Wait until odrv0.axis0.controller.config.anticogging.calib_anticogging == False
+# you can type 
+#     odrv0.axis0.controller.config.anticogging.calib_anticogging
+# and just up arrow and enter till it turns false
+
+#Now tell the ODrive we are pre-calibrated for anti-cogging so we don't need to do it every time we power on
+odrv0.axis0.controller.config.anticogging.pre_calibrated = True
+
+odrv0.save_configuration()
+odrv0.reboot()
+
+
+##################################      moteur 2    ###########################################
+
+odrv0.config.brake_resistance = 2
+
+odrv0.axis1.motor.config.pole_pairs = 7
+odrv0.axis1.motor.config.calibration_current = 20
+
+odrv0.axis1.motor.config.current_lim = 20
+
+odrv0.axis1.motor.config.resistance_calib_max_voltage = 2
+odrv0.axis1.motor.config.requested_current_range = 5
+odrv0.axis1.motor.config.current_control_bandwidth = 100
+odrv0.axis1.motor.config.calibration_current = 20
+odrv0.axis1.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
+
+odrv0.axis1.encoder.config.cpr = 8192
+
+
+odrv0.axis1.controller.config.vel_limit = 2000
+odrv0.axis1.controller.config.vel_gain=0.2/2 #[Nm/(turn/s)]
+odrv0.axis1.controller.config.vel_integrator_gain  = (0.5 * 10 * 1.9/2 ) #[Nm/((turn/s) * s)]
+odrv0.axis1.controller.config.pos_gain=15  #[(turn/s) / turn]
+
+odrv0.axis1.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+odrv0.axis1.controller.config.enable_torque_mode_vel_limit = False
+
+odrv0.save_configuration()
+odrv0.reboot()
+
+
+
+odrv0.axis1.encoder.config.use_index =True
+odrv0.axis1.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+odrv0.axis1.encoder.config.use_index = True
+odrv0.axis1.requested_state = AXIS_STATE_ENCODER_INDEX_SEARCH
+odrv0.axis1.config.startup_encoder_index_search = True
+odrv0.axis1.requested_state = AXIS_STATE_MOTOR_CALIBRATION
+odrv0.axis1.motor.config.pre_calibrated = True
+odrv0.axis1.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION
+
+
+
+
+odrv0.axis1.encoder.config.pre_calibrated = True
+odrv0.axis1.motor.config.pre_calibrated = True
+
+odrv0.axis1.config.startup_motor_calibration = True
+odrv0.axis1.config.startup_encoder_offset_calibration = True
+odrv0.axis1.config.startup_closed_loop_control = True
+
+
+odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+#tell the odrive we are pr-calibrated so we don't need to recalibrate every time
+
+
+#NOTE: THE FOLLOWING COMMANDS MIGHT MAKE YOUR MOTOR SPIN WILDLY FOR A SECOND IF YOU HAVE MOVED IT SINCE TURNING IT ON
+#Put the controller in position control mode
+odrv0.axis1.controller.config.control_mode = CONTROL_MODE_POSITION_CONTROL
+odrv0.axis1.controller.config.input_mode = INPUT_MODE_PASSTHROUGH
+odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+
+#Temporarily increase the gain so that the calibration happens quickly
+odrv0.axis1.controller.config.pos_gain = 200.0
+odrv0.axis1.controller.config.vel_integrator_gain  = (0.5 * 10 * 0.32/2 )*10
+
+#THIS IS THE MAGIC - Start the calibration
+odrv0.axis1.controller.start_anticogging_calibration()
+
+#Put the gain back to what it was before
+odrv0.axis1.controller.config.vel_integrator_gain  = (0.5 * 10 * 0.32/2 )
+odrv0.axis1.controller.config.pos_gain=15
+
+# Wait until odrv0.axis1.controller.config.anticogging.calib_anticogging == False
+# you can type 
+#     odrv0.axis1.controller.config.anticogging.calib_anticogging
+# and just up arrow and enter till it turns false
+
+#Now tell the ODrive we are pre-calibrated for anti-cogging so we don't need to do it every time we power on
+odrv0.axis1.controller.config.anticogging.pre_calibrated = True
+
+odrv0.save_configuration()
+odrv0.reboot()
+
+https://www.solomotorcontrollers.com/blog/speed-torque-control-brushless-motor-hall-sensors-arduino-code/
+
+
+Arduino a traduire
+
+odrv0.axis0.trap_traj.config.accel_limit = 0.3
+
+In [7]: odrv0.axis1.trap_traj.config.accel_limit = 0.3
+
+In [8]: odrv0.axis1.trap_traj.config.vel_limit = 5
+
+In [9]: odrv0.axis0.trap_traj.config.vel_limit = 5
