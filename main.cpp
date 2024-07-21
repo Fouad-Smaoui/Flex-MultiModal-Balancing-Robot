@@ -1,8 +1,10 @@
 // Flex balancing robot using MPU6050 DMP (MotionApps v2.0)
 // 26/03/2021 by Ferréol Gagey <ferreol.gagey@ens-paris-saclay.fr>
+// 16/07/2024 by Smaoui Fouad <fouad.smaoui@outlook.com>
 
 // Changelog:
 // 26/03/2021 - simple pid without encoder
+// 16/07/2024 - Integrated LQR control for improved stability & continuous autonomous operation
 
 //===============================================
 
