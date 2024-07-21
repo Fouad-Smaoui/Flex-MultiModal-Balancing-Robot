@@ -36,7 +36,7 @@ like resistors, capacitors, potentiometers for tuning PID gains, switches, and L
 
 ## Control Systems
 
-Solarized dark             |  Solarized Ocean
+Flex Down             |  Flex UP
 :-------------------------:|:-------------------------:
 ![](Images/FLEX_assis.png)  |  ![](Images/FLEX_debout.png)
 
