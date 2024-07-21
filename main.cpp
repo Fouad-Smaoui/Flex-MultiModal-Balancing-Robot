@@ -197,6 +197,8 @@ void TurnLeft(float);
 float map(float, float, float, float, float);
 float constrain(float,float,float);
 
+void calculateLQRControl(); 
+
 float valuePotkp;
 float valuePotkd;
 float valuePotki;
@@ -431,6 +433,8 @@ while(1)
 //            pc.printf("%f3.2\n",ypr[2] * 180/M_PI);
 #endif
     }
+    // Call balance control function to maintain balance
+    balanceControl();
   }
 }
 
@@ -450,7 +454,22 @@ void balancePID()
     
     outputPID=constrain(outputPID,-0.8f,0.8f);
 }
-
+// This function calculates the control input using the LQR formula based on the current state variables.
+void calculateLQRControl() {
+    // Update state variables
+    x = (linearleftPosition + linearrightPosition) / 2.0;
+    x_dot = (linearleftVelocity + linearrightVelocity) / 2.0;
+    theta = pitchAngle;
+    theta_dot = pitchVelocity;
+    // Compute the control input using LQR formula
+    couplelqr = -(K1lqr * x + K2lqr * x_dot + K3lqr * theta + K4lqr * theta_dot);
+    // Apply the control input to the motors
+    if (couplelqr > 0) {
+        Forward(fabs(couplelqr));
+    } else {
+        Reverse(fabs(couplelqr));
+    }
+}
 void balanceControl() 
 {    
     int direction=0;                                            // Variable to hold direction we want to drive
@@ -469,6 +488,8 @@ void balanceControl()
         rotationCmd = 0; 
         t.reset();       
         }
+    // Calculate LQR control based on current state
+    calculateLQRControl();
   
     switch( direction) {                                        // Depending on what direction was passed
         case 0:                                                // Stop case
