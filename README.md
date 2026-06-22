@@ -1,5 +1,7 @@
 # FLEX: Wheeled Bipedal Self-Balancing Robot
 
+![FLEX balancing](Images/flex_balancing.gif)
+
 [![Watch The Video](https://img.youtube.com/vi/Me2IMcmEs_o/0.jpg)](https://youtu.be/Me2IMcmEs_o)
 
 FLEX is a wheeled bipedal self-balancing robot (inverted-pendulum control) built as part of a
