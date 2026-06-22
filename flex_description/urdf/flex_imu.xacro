@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Models the MPU6050 (firmware/src/main.cpp: mpu.initialize(), I2C D14/D15).
+       On-chip DMP fusion is represented in simulation by Gazebo's IMU sensor plugin,
+       which publishes orientation+angular velocity directly — there is no separate
+       Kalman/complementary filter node here, matching real firmware behavior
+       (see docs/architecture/control_architecture.md). -->
+  <xacro:property name="imu_x" value="0.02"/>
+  <xacro:property name="imu_y" value="0.02"/>
+  <xacro:property name="imu_z" value="0.01"/>
+  <xacro:property name="imu_mass" value="0.01"/>
+
+  <link name="imu_link">
+    <visual>
+      <geometry>
+        <box size="${imu_x} ${imu_y} ${imu_z}"/>
+      </geometry>
+      <material name="flex_imu_blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${imu_x} ${imu_y} ${imu_z}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${imu_mass}"/>
+      <inertia ixx="0.000000417" iyy="0.000000417" izz="0.000000667" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="imu_link">
+    <sensor name="flex_imu" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <topic>imu</topic>
+      <gz_frame_id>imu_link</gz_frame_id>
+    </sensor>
+  </gazebo>
+
+</robot>

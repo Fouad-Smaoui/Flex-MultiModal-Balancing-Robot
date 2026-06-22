@@ -1,0 +1,25 @@
+<!--
+  XML-launch equivalent of flex_demo.launch.py, kept as a reference example of ROS2 Jazzy's
+  XML launch syntax (Python is the primary, more flexible entry point used by scripts/demo.sh;
+  this file demonstrates the same Gazebo+spawn+bridge+RViz composition declaratively).
+
+  Usage:
+      ros2 launch flex_gazebo flex_demo.launch.xml
+-->
+<launch>
+  <let name="world_path" value="$(find-pkg-share flex_gazebo)/worlds/flex_world.sdf"/>
+  <let name="bridge_config" value="$(find-pkg-share flex_gazebo)/config/gz_bridge.yaml"/>
+  <let name="rviz_config" value="$(find-pkg-share flex_description)/rviz/flex_view.rviz"/>
+
+  <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+    <arg name="gz_args" value="-r $(var world_path)"/>
+  </include>
+
+  <include file="$(find-pkg-share flex_gazebo)/launch/flex_spawn.launch.py"/>
+
+  <node pkg="ros_gz_bridge" exec="parameter_bridge" name="flex_gz_bridge" output="screen">
+    <param name="config_file" value="$(var bridge_config)"/>
+  </node>
+
+  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(var rviz_config)" output="screen"/>
+</launch>

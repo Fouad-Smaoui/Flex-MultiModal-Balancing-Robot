@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <material name="flex_chassis_grey">
+    <color rgba="0.30 0.30 0.32 1.0"/>
+  </material>
+
+  <material name="flex_wheel_black">
+    <color rgba="0.08 0.08 0.08 1.0"/>
+  </material>
+
+  <material name="flex_leg_orange">
+    <color rgba="0.90 0.45 0.10 1.0"/>
+  </material>
+
+  <material name="flex_imu_blue">
+    <color rgba="0.10 0.35 0.85 1.0"/>
+  </material>
+
+</robot>

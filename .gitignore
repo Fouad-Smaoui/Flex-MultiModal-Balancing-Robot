@@ -1,0 +1,26 @@
+# MATLAB / Simulink build artifacts
+slprj/
+*.slxc
+*.autosave
+*.mat
+*_grt_rtw/
+
+# ROS2 / colcon
+build/
+install/
+log/
+**/generated/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Docker
+*.log
