@@ -71,6 +71,29 @@ digital twin instead. See [`docs/architecture/control_architecture.md`](docs/arc
 for the full reasoning, including why `diff_drive_controller` and ODrive torque-control mode were
 chosen over alternatives that would have created competing control loops.
 
+## MATLAB/Simulink & CAD design
+
+`matlab_archive/Multi-Body_Simulator/simulateur_FLEX_multicorps_V2.slx` is a multibody physics
+validation model — it imports the robot's rigid-body structure, drives it with the same PID
+control law conceptually as the firmware, and is paired with the SolidWorks CAD part
+(`FLEXmatlab-Corps volumiques.SLDPRT`) for body geometry/inertia.
+
+Simulink block diagram (multibody dynamics + verification + PID command blocks):
+
+![Simulink control diagram](Images/Simulink_Model.png)
+
+Mechanics Explorer animation of the same model — the robot balancing on a virtual track:
+
+![Simulink multibody simulation](Images/Simulink_Simulation.png)
+
+Mechanical CAD assembly (leg + wheel subassembly, motor/encoder/Nucleo mounts):
+
+![CAD assembly](Images/CAD.png)
+
+This CAD work is the design source for the robot's real geometry; it hasn't yet been exported to
+STL/STEP and wired into the Gazebo URDF (see [Known limitations](#known-limitations--honest-status)),
+so the box/cylinder primitives in the digital twin are a placeholder for this actual design.
+
 ## Architecture docs
 
 - [`hardware_architecture.md`](docs/architecture/hardware_architecture.md) — component inventory, block diagram, CAD-to-sim mesh pipeline
