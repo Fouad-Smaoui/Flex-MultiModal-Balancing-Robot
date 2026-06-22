@@ -5,9 +5,13 @@ Usage:
 
 This is what scripts/demo.sh calls after building the workspace. It brings up:
   1. Gazebo Harmonic (gz sim) running flex_world.sdf
-  2. robot_state_publisher + the FLEX robot spawned into it (flex_spawn.launch.py)
-  3. ros_gz_bridge translating /imu, /cmd_vel, /clock between Gazebo and ROS2
-  4. RViz2 with a pre-built view of the robot + TF tree
+  2. robot_state_publisher + the FLEX robot spawned into it (flex_spawn.launch.py) — this also
+     starts the controller_manager via the gz_ros2_control plugin embedded in the URDF
+  3. flex_control's controller spawners (joint_state_broadcaster, imu_sensor_broadcaster,
+     diff_drive_controller, leg_position_controller)
+  4. ros_gz_bridge translating /clock between Gazebo and ROS2 (everything else — /imu,
+     /joint_states, /odom, /tf, /cmd_vel — is native ROS2 via the controllers above)
+  5. RViz2 with a pre-built view of the robot + TF tree
 
 See docs/architecture/deployment_architecture.md "Recruiter Demo Workflow" for the full
 step-by-step including what to inspect (ros2 topic list, rqt_graph, RViz).
@@ -26,10 +30,15 @@ def generate_launch_description():
     gazebo_pkg_share = get_package_share_directory("flex_gazebo")
     description_pkg_share = get_package_share_directory("flex_description")
 
+    control_pkg_share = get_package_share_directory("flex_control")
+
     world_path = os.path.join(gazebo_pkg_share, "worlds", "flex_world.sdf")
     bridge_config_path = os.path.join(gazebo_pkg_share, "config", "gz_bridge.yaml")
     rviz_config_path = os.path.join(description_pkg_share, "rviz", "flex_view.rviz")
     spawn_launch_path = os.path.join(gazebo_pkg_share, "launch", "flex_spawn.launch.py")
+    spawn_controllers_launch_path = os.path.join(
+        control_pkg_share, "launch", "spawn_controllers.launch.py"
+    )
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -42,6 +51,10 @@ def generate_launch_description():
 
     spawn = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(spawn_launch_path)
+    )
+
+    spawn_controllers = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(spawn_controllers_launch_path)
     )
 
     bridge_node = Node(
@@ -64,6 +77,7 @@ def generate_launch_description():
         [
             gz_sim,
             spawn,
+            spawn_controllers,
             bridge_node,
             rviz_node,
         ]

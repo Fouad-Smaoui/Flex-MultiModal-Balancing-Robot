@@ -32,17 +32,11 @@
     </joint>
   </ros2_control>
 
-  <!-- The gz_ros2_control plugin load is deferred until flex_control exists (roadmap item #7,
-       a future session) — it needs flex_control's controllers.yaml to be present at launch,
-       and loading it prematurely against a nonexistent params file risks breaking the
-       gravity-settle sanity check this package is responsible for today. Uncomment once
-       flex_control ships:
-
+  <!-- flex_control now exists (roadmap item #7) — load the controller_manager plugin. -->
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <parameters>$(find flex_control)/config/flex_controllers.yaml</parameters>
     </plugin>
   </gazebo>
-  -->
 
 </robot>

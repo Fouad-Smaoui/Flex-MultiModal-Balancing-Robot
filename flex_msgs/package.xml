@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>flex_gazebo</name>
+  <name>flex_msgs</name>
   <version>0.1.0</version>
   <description>
-    Gazebo Harmonic simulation package for FLEX: world file, spawn/demo launch files, and
-    ros_gz_bridge topic configuration. See docs/architecture/simulation_architecture.md.
+    Custom messages for FLEX's hardware-abstraction layer and the future STM32 serial bridge /
+    Simulink-generated controller node. See docs/architecture/deployment_architecture.md.
   </description>
   <maintainer email="fouad.smaoui@outlook.com">Fouad Smaoui</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
-  <exec_depend>flex_description</exec_depend>
-  <exec_depend>flex_control</exec_depend>
-  <exec_depend>ros_gz_sim</exec_depend>
-  <exec_depend>ros_gz_bridge</exec_depend>
-  <exec_depend>robot_state_publisher</exec_depend>
-  <exec_depend>rviz2</exec_depend>
-  <exec_depend>launch_ros</exec_depend>
+  <depend>std_msgs</depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

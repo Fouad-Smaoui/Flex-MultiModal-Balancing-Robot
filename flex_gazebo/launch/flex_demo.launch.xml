@@ -17,6 +17,8 @@
 
   <include file="$(find-pkg-share flex_gazebo)/launch/flex_spawn.launch.py"/>
 
+  <include file="$(find-pkg-share flex_control)/launch/spawn_controllers.launch.py"/>
+
   <node pkg="ros_gz_bridge" exec="parameter_bridge" name="flex_gz_bridge" output="screen">
     <param name="config_file" value="$(var bridge_config)"/>
   </node>

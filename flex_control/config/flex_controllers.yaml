@@ -1,0 +1,57 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz — same order of magnitude as the real firmware's 100 Hz balance Ticker
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    imu_sensor_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+    leg_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+imu_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: flex_imu
+    frame_id: imu_link
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+
+    # Verified physical dimensions (firmware/src/main.cpp, matlab_archive/LQR.m) —
+    # see docs/architecture/hardware_architecture.md.
+    wheel_separation: 0.280
+    wheel_radius: 0.072
+
+    publish_rate: 50.0
+    odom_frame_id: odom
+    base_frame_id: base_footprint
+    pose_covariance_diagonal: [0.001, 0.001, 0.0, 0.0, 0.0, 0.01]
+    twist_covariance_diagonal: [0.001, 0.0, 0.0, 0.0, 0.0, 0.01]
+
+    open_loop: false
+    enable_odom_tf: true
+
+    cmd_vel_timeout: 0.5
+    use_stamped_vel: false
+
+    # NOTE: this controller models the kinematic/velocity layer, analogous to the real
+    # firmware's outer PD loop on wheel position/velocity — it does not replace, and is not
+    # a substitute for, the inner balance PID. See docs/architecture/control_architecture.md.
+    linear.x.max_velocity: 0.5
+    linear.x.min_velocity: -0.5
+    angular.z.max_velocity: 1.5
+    angular.z.min_velocity: -1.5
+
+leg_position_controller:
+  ros__parameters:
+    joints:
+      - left_leg_joint
+      - right_leg_joint
+    interface_name: position

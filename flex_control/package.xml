@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>flex_control</name>
+  <version>0.1.0</version>
+  <description>
+    ros2_control controller_manager configuration for FLEX: joint_state_broadcaster,
+    imu_sensor_broadcaster, diff_drive_controller, leg_position_controller. See
+    docs/architecture/software_architecture.md and control_architecture.md for the
+    "diff_drive_controller wraps the existing outer control surface, doesn't replace the
+    inner balance PID" framing.
+  </description>
+  <maintainer email="fouad.smaoui@outlook.com">Fouad Smaoui</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>imu_sensor_broadcaster</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>position_controllers</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

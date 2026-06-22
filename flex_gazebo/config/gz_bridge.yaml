@@ -1,25 +1,15 @@
 # ros_gz_bridge topic mappings — Gazebo Harmonic (gz-transport) <-> ROS2 Jazzy.
 # See docs/architecture/simulation_architecture.md "Topic Parity" table for the
 # sim <-> real-robot equivalence this bridge is designed to preserve.
+#
+# Now that flex_control's gz_ros2_control plugin is active, /imu, /joint_states, /odom,
+# /tf, and /cmd_vel are all published/subscribed NATIVELY in ROS2 by
+# imu_sensor_broadcaster, joint_state_broadcaster, and diff_drive_controller — bridging
+# them here as well would create duplicate publishers on the same topic names. Only /clock
+# (a pure Gazebo gz-transport signal ROS2 nodes need for use_sim_time) is bridged.
 
 - ros_topic_name: "/clock"
   gz_topic_name: "/clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
   gz_type_name: "gz.msgs.Clock"
   direction: GZ_TO_ROS
-
-- ros_topic_name: "/imu"
-  gz_topic_name: "/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-
-- ros_topic_name: "/cmd_vel"
-  gz_topic_name: "/cmd_vel"
-  ros_type_name: "geometry_msgs/msg/Twist"
-  gz_type_name: "gz.msgs.Twist"
-  direction: ROS_TO_GZ
-
-# /joint_states, /odom, /tf are intentionally NOT listed here — once flex_control (future
-# package) is built, those are published natively in ROS2 by joint_state_broadcaster and
-# diff_drive_controller via gz_ros2_control, not via this gz-transport bridge.

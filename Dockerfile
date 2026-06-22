@@ -1,9 +1,9 @@
 # FLEX V3 — ROS2 Jazzy + Gazebo Harmonic runtime.
 #
-# This image builds and runs the flex_* ROS2 packages (flex_description, flex_gazebo, and
-# future flex_control/flex_hardware/flex_simulink/flex_msgs once they exist). Chosen over a
-# bare WSL2/host install for portability — "clone, build the image, run one command" is the
-# whole setup story (see docs/architecture/deployment_architecture.md, Recruiter Demo Workflow).
+# This image builds and runs the flex_* ROS2 packages (flex_description, flex_gazebo,
+# flex_control, flex_msgs, flex_hardware). Chosen over a bare WSL2/host install for
+# portability — "clone, build the image, run one command" is the whole setup story (see
+# docs/architecture/deployment_architecture.md, Recruiter Demo Workflow).
 
 FROM osrf/ros:jazzy-desktop
 
@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-ros2-control \
     ros-jazzy-ros2-controllers \
     ros-jazzy-gz-ros2-control \
+    ros-jazzy-controller-manager \
     && rm -rf /var/lib/apt/lists/*
 
 ENV ROS_WS=/ws
@@ -25,6 +26,9 @@ WORKDIR ${ROS_WS}
 # odrive/, future_work/, docs/ etc. are not part of the build.
 COPY flex_description ${ROS_WS}/src/flex_description
 COPY flex_gazebo ${ROS_WS}/src/flex_gazebo
+COPY flex_control ${ROS_WS}/src/flex_control
+COPY flex_msgs ${ROS_WS}/src/flex_msgs
+COPY flex_hardware ${ROS_WS}/src/flex_hardware
 
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
     rosdep update --rosdistro jazzy || true && \
